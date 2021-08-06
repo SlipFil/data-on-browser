@@ -1,14 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data on browser</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./styles.css">
 </head>
+
 <body>
-    test
+    <div class="wrapper">
+        <div class="card cookies">
+            <h2>Куки</h2>
+            <label for="login">Введите логин:</label>
+            <input type="text" id="login">
+            <label for="password">Введите пароль:</label>
+            <input type="text" id="password">
+            <button id="loginButton">Войти</button>
+            <button id="deleteCookies">Удалить куки</button>
+        </div>
+        <div class="card localStorage">
+            <h2>Localstorage</h2>
+            <label for="login">Введите текст:</label>
+            <textarea style="margin-bottom: 20px; margin-top: 20px; width: 200px;height: 150px;"
+                id="textarea"></textarea>
+
+            <button id="clear">Очистить</button>
+        </div>
+        <!-- <div class="card">
+            <label for="login">Введите логин</label>
+            <input type="text" id="login">
+            <label for="password">Введите пароль</label>
+            <input type="text">
+            <button id="loginButton">Войти</button>
+        </div>
+        <div class="card">
+            <label for="login">Введите логин</label>
+            <input type="text" id="login">
+            <label for="password">Введите пароль</label>
+            <input type="text">
+            <button id="loginButton">Войти</button>
+        </div> -->
+    </div>
+
     <script src="./scripts.js"></script>
 </body>
+
 </html>
