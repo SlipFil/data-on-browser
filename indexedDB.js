@@ -18,11 +18,10 @@ carPriceInput.addEventListener("keyup", ()=>{
 })
 
 openRequest.onupgradeneeded = function(e) {
-
-    let thisDB = openRequest.result
-    if(!thisDB.objectStoreNames.contains('cars')){
-        thisDB.createObjectStore("cars", {autoIncrement: true})
-    }
+  console.log("Upgrading")
+    let carDB = e.target.result;
+    let cars = carDB.createObjectStore('cars', {autoIncrement: true})
+   
   // срабатывает, если на клиенте нет базы данных
   // ...выполнить инициализацию...
 };
@@ -31,23 +30,42 @@ openRequest.onerror = function() {
   console.error("Error", openRequest.error);
 };
 
-openRequest.onsuccess = function() {
-    carDB = openRequest.result;
+openRequest.onsuccess = function(e) {
+    carDB = e.target.result;
     
-  console.log(carDB)
+    addCarButton.addEventListener("click", ()=>{
+      addCar();
+      e.preventDefault();
+      // let car = {
+      //     "carName": carName,
+      //     "carPrice": carPrice
+      // }
+      // let transaction = carDB.transaction(["cars"], "readwrite")
+      // let store = transaction.objectStore('car')
+      // let request = store.addCarButton(car)
+  })
+  
   // продолжить работу с базой данных, используя объект db
 };
-
-
-addCarButton.addEventListener("click", ()=>{
-    let car = {
-        "carName": carName,
-        "carPrice": carPrice
+const addCar = ()=> {
+  let transaction = carDB.transaction(["cars"], "readwrite")
+  let store = transaction.objectStore('cars')
+  let car = {
+    "carName": carName,
+    "carPrice": carPrice
     }
-    let transaction = carDB.transaction(["cars"], "readwrite")
-    let store = transaction.objectStore('car')
-    let request = store.addCarButton(car)
-})
+  let request = store.add(car)
+
+  transaction.oncomplete = () => {
+    console.log('stored car!')
+  }
+  transaction.onerror = (event) => {
+    alert('error storing car ' + event.target.errorCode);
+  }
+}
+
+
+
 
 
 
