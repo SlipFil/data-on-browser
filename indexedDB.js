@@ -10,11 +10,11 @@ addCarButton = document.querySelector("#addCar")
 
 carNameInput.addEventListener("keyup", ()=>{
     carName = carNameInput.value
-    console.log(carName)
+    
 })
 carPriceInput.addEventListener("keyup", ()=>{
     carPrice = carPriceInput.value
-    console.log(carPrice)
+    
 })
 
 openRequest.onupgradeneeded = function(e) {
@@ -32,17 +32,11 @@ openRequest.onerror = function() {
 
 openRequest.onsuccess = function(e) {
     carDB = e.target.result;
-    
+    getAndDisplayCars(carDB)
     addCarButton.addEventListener("click", ()=>{
       addCar();
       e.preventDefault();
-      // let car = {
-      //     "carName": carName,
-      //     "carPrice": carPrice
-      // }
-      // let transaction = carDB.transaction(["cars"], "readwrite")
-      // let store = transaction.objectStore('car')
-      // let request = store.addCarButton(car)
+      
   })
   
   // продолжить работу с базой данных, используя объект db
@@ -57,13 +51,47 @@ const addCar = ()=> {
   let request = store.add(car)
 
   transaction.oncomplete = () => {
-    console.log('stored car!')
+    getAndDisplayCars(carDB)
   }
   transaction.onerror = (event) => {
     alert('error storing car ' + event.target.errorCode);
   }
 }
 
+const getAndDisplayCars = (carsDB) => {
+  let tx = carsDB.transaction(['cars'], 'readonly');
+  let store = tx.objectStore('cars');
+  // Создать запрос курсора
+  let req = store.openCursor();
+  let allCars = [];
+  req.onsuccess = (event) => {
+    // Результатом req.onsuccess в запросах openCursor является
+     // IDBCursor
+    let cursor = event.target.result;
+    if (cursor != null) {
+      // Если курсор не нулевой, мы получили элемент.
+      allCars.push(cursor.value);
+      cursor.continue();
+    } else {
+      // Если у нас нулевой курсор, это означает, что мы получили
+       // все данные, поэтому отображаем заметки, которые мы получили.
+      displayCars(allCars);
+    }
+  }
+  req.onerror = (event) => {
+    alert('error in cursor request ' + event.target.errorCode);
+  }
+}
+
+const displayCars = (cars) => {
+  let listHTML = '<ul>';
+  for (let i = 0; i < cars.length; i++) {
+    let car = cars[i];
+    listHTML += '<li>' + car.carName + ' ' + '$' + car.carPrice + '</li>';
+    
+  }
+  document.getElementById('cars').innerHTML = listHTML;
+}
 
 
 
