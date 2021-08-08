@@ -1,6 +1,21 @@
 //Публикация первой версии БД
 
-let openRequest = indexedDB.open(testDB, 1);
+let openRequest = indexedDB.open("cars", 1);
+let carDB, carName, carPrice, carNameInput, carPriceInput, addCarButton
+
+carNameInput = document.querySelector("#carName")
+carPriceInput = document.querySelector("#carPrice")
+addCarButton = document.querySelector("#addCar")
+
+
+carNameInput.addEventListener("keyup", ()=>{
+    carName = carNameInput.value
+    console.log(carName)
+})
+carPriceInput.addEventListener("keyup", ()=>{
+    carPrice = carPriceInput.value
+    console.log(carPrice)
+})
 
 openRequest.onupgradeneeded = function() {
   // срабатывает, если на клиенте нет базы данных
@@ -12,29 +27,14 @@ openRequest.onerror = function() {
 };
 
 openRequest.onsuccess = function() {
-  let db = openRequest.result;
+    carDB = openRequest.result;
+  console.log(carDB)
   // продолжить работу с базой данных, используя объект db
 };
 
 
 
-// Публикация второй версии БД
 
-let openRequest = indexedDB.open("store", 2);
-
-// проверить существование указанной версии базы данных, обновить по мере необходимости:
-openRequest.onupgradeneeded = function() {
-  // версия существующей базы данных меньше 2 (или база данных не существует)
-  let db = openRequest.result;
-  switch(db.version) { // существующая (старая) версия базы данных
-    case 0:
-      // версия 0 означает, что на клиенте нет базы данных
-      // выполнить инициализацию
-    case 1:
-      // на клиенте версия базы данных 1
-      // обновить
-  }
-};
 
 
 // удаление БД
