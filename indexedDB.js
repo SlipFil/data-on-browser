@@ -94,11 +94,5 @@ const displayCars = (cars) => {
 }
 
 
-
-
-
-
-
-
 // удаление БД
 // let deleteRequest = indexedDB.deleteDatabase(name)

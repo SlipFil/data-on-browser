@@ -11,10 +11,11 @@ function setCookie(name, value, options = {}) {
 
   options = {
     path: '/',
+    
     //domain домен на котором доступны куки
     //expires, max-age - время жизни куки
     //secure передача куки только по  HTTPS
-    //samesite=strict защита от XSRF-атак
+    //samesite=sttric защита от XSRF-атак
     ...options
   };
 
